@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>WebApiTutorial</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+
+    <h1>WebApiTutorial</h1>
+    <div>
+        <h2>All Products</h2>
+        <ul id="products" />
+    </div>
+    <div>
+        <h2>Search by ID</h2>
+        <input type="text" id="prodId" size="5" />
+        <input type="button" value="Search" onclick="find();" />
+        <p id="product" />
+    </div>
+    <div>
+        <h2>Post</h2>
+        <input type="button" value="Post" onclick="postData();" />
+    </div>
+    <div>
+        <h2>Put</h2>
+        <input type="button" value="Put" onclick="putData();" />
+    </div>
+    <div>
+        <h2>Delete</h2>
+        <input type="button" value="Del" onclick="delData();" />
+    </div>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script>
+        var uri = 'api/Customers/';
+
+        $(document).ready(function () {
+            // Send an AJAX request
+            $.getJSON(uri)
+                .done(function (data) {
+                    // On success, 'data' contains a list of products.
+                    $.each(data, function (key, item) {
+                        // Add a list item for the product.
+                        $('<li>', { text: formatItem(item) }).appendTo($('#products'));
+                    });
+                });
+        });
+
+        function formatItem(item) {
+            return 'Name:' + item.Name + ', Age:' + item.Age;
+        }
+
+        function find() {
+            var id = $('#prodId').val();
+            $.getJSON(uri + '/' + id)
+                .done(function (data) {
+                    $('#product').text(formatItem(data));
+                })
+                .fail(function (jqXHR, textStatus, err) {
+                    $('#product').text('Error: ' + err);
+                });
+        }
+
+        function postData() {
+            var json = JSON.stringify({
+                Id: "23",
+                Name: "Sam",
+                Age: "36",
+                IsMarried: "True"
+            });
+            $.ajax({
+                url: uri,
+                cache: false,
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                data: json,
+                statusCode: {
+                    201 /*Created*/: function (data) {
+
+                    }
+                }
+            });
+        }
+
+        function putData() {
+            var id = 1;
+            var json = JSON.stringify({
+                Id: "23",
+                Name: "Sam",
+                Age: "36",
+                IsMarried: "True"
+            });
+            $.ajax({
+                url: uri + id,
+                cache: false,
+                type: 'PUT',
+                contentType: 'application/json; charset=utf-8',
+                data: json,
+                success: function () {
+
+                }
+            })
+            .fail(function (xhr, textStatus, err) {
+
+            });
+        }
+
+        function delData() {
+            var id = 1;
+            $.ajax({
+                url: uri + id,
+                cache: false,
+                type: 'DELETE   ',
+                contentType: 'application/json; charset=utf-8',
+                data: null,
+                success: function () {
+
+                }
+            })
+            .fail(function (xhr, textStatus, err) {
+
+            });
+        }
+    </script>
+
+</body>
+</html>

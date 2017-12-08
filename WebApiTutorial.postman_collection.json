@@ -1,0 +1,198 @@
+{
+	"variables": [],
+	"info": {
+		"name": "WebApiTutorial",
+		"_postman_id": "60d0bc22-aa9f-86bd-1114-8463ef0851fb",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:64486/api/Hello - Get",
+			"request": {
+				"url": "http://localhost:64486/api/Hello/",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:64486/api/Hello2/ - GET",
+			"request": {
+				"url": "http://localhost:64486/api/Hello2/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "=BCC"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:64486/api/Customers/ - GET",
+			"request": {
+				"url": "http://localhost:64486/api/Customers/1",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Id\": 99,\n    \"Name\": \"Name_991\",\n    \"Age\": 31,\n    \"IsMarried\": true\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:64486/api/Customers/ - GET 2",
+			"request": {
+				"url": {
+					"raw": "http://localhost:64486/api/Customers/1?name=\"AAAA\"",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "64486",
+					"path": [
+						"api",
+						"Customers",
+						"1"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "\"AAAA\"",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Id\": 99,\n    \"Name\": \"Name_991\",\n    \"Age\": 31,\n    \"IsMarried\": true\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:64486/api/Customers/1?age=30",
+			"request": {
+				"url": {
+					"raw": "http://localhost:64486/api/Customers/1?age=30",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "64486",
+					"path": [
+						"api",
+						"Customers",
+						"1"
+					],
+					"query": [
+						{
+							"key": "age",
+							"value": "30",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:64486/api/Files/ - POST",
+			"request": {
+				"url": "http://localhost:64486/api/Files/",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"description": "",
+							"type": "file",
+							"src": "AAA.html"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:64486/api/Files/ - GET",
+			"request": {
+				"url": {
+					"raw": "http://localhost:64486/api/Files/?fileName=AAA.html",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "64486",
+					"path": [
+						"api",
+						"Files",
+						""
+					],
+					"query": [
+						{
+							"key": "fileName",
+							"value": "AAA.html",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"value": "",
+							"description": "",
+							"type": "file"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
