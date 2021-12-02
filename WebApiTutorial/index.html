@@ -9,26 +9,43 @@
 
     <h1>WebApiTutorial</h1>
     <div>
-        <h2>All Products</h2>
-        <ul id="products" />
+        <h2>Products & Customers</h2>
+        <div>
+            <h4>All Products</h4>
+            <ul id="products" />
+        </div>
+        <div>
+            <h2>Search by ID</h2>
+            <input type="text" id="prodId" size="5" />
+            <input type="button" value="Search" onclick="find();" />
+            <p id="product" />
+        </div>
+        <div>
+            <h4>Post</h4>
+            <input type="button" value="Post" onclick="postData();" />
+        </div>
+        <div>
+            <h2>Put</h2>
+            <input type="button" value="Put" onclick="putData();" />
+        </div>
+        <div>
+            <h2>Delete</h2>
+            <input type="button" value="Del" onclick="delData();" />
+        </div>
     </div>
     <div>
-        <h2>Search by ID</h2>
-        <input type="text" id="prodId" size="5" />
-        <input type="button" value="Search" onclick="find();" />
-        <p id="product" />
-    </div>
-    <div>
-        <h2>Post</h2>
-        <input type="button" value="Post" onclick="postData();" />
-    </div>
-    <div>
-        <h2>Put</h2>
-        <input type="button" value="Put" onclick="putData();" />
-    </div>
-    <div>
-        <h2>Delete</h2>
-        <input type="button" value="Del" onclick="delData();" />
+        <h2>File</h2>
+        <div>
+            <h2>Download by name</h2>
+            <input type="text" id="fileName" size="5" />
+            <input type="button" value="Download" onclick="downloadFile();" />
+        </div>
+        <div>
+            <h4>Upload</h4>
+            <input type="file" name="file" id="fileUpload" />
+            <p class="help-block">上傳檔案的大小限制為 50 MB.</p>
+            <input type="button" value="Upload" onclick="uploadFile();" />
+        </div>
     </div>
 
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
@@ -102,7 +119,8 @@
                 }
             })
             .fail(function (xhr, textStatus, err) {
-
+                alert(xhr.status);
+                alert(thrownError);
             });
         }
 
@@ -119,7 +137,64 @@
                 }
             })
             .fail(function (xhr, textStatus, err) {
+                alert(xhr.status);
+                alert(thrownError);
+            });
+        }
 
+        var uriForFile = 'api/Files/';
+
+        function downloadFile() {
+            var fileName = $('#fileName').val();
+            $.ajax({
+                url: uriForFile + "?fileName=" + fileName,
+                cache: false,
+                type: 'GET',
+                contentType: 'application/octet-stream; charset=utf-8',
+                data: null,
+                success: function (res) {
+                    console.log('downloadFile success.', res);
+                    var blob = new Blob(res);
+                    var url = document.createObjectURL(blob);
+                    var link = document.createElement('a');
+                    link.setAttribute("download", fileName);
+                    link.click();
+                    URL.revokeObjectURL(link.href);
+                }
+            })
+            .fail(function (xhr, textStatus, err) {
+                alert(xhr.status);
+                alert(thrownError);
+            });
+        }
+
+        function uploadFile() {
+
+            // 將檔案append FormData
+            var files = $("#fileUpload").get(0).files;
+            if (files.length <= 0) {
+                return;
+            }
+
+            // 宣告一個FormData
+            var formData = new FormData();
+            formData.append("file", files[0]);
+            //var uploadFileName = files[0].name;
+
+            $.ajax({
+                url: uriForFile,
+                cache: false,
+                type: 'POST',
+                contentType: 'multipart/form-data; charset=utf-8',
+                data: formData,
+                processData: false, // Don't process the files
+                success: function () {
+                    alert("uploadFile success.");
+                }
+            })
+            .fail(function (xhr, textStatus, err) {
+                alert(xhr.status);
+                alert(thrownError);
             });
         }
     </script>

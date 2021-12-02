@@ -34,41 +34,43 @@ namespace WebApiTutorial.Controllers
         }
 
         // POST: api/File
-        //public void Post([FromBody]string value)
         //public void Post(HttpPostedFileBase file)
-        //public ApiResult Post(HttpRequestMessage request)
-        public double Post(HttpRequestMessage request)
+        public ApiResult Post(HttpRequestMessage request)
+        //public double Post(HttpRequestMessage request)
         {
             HttpContext context = HttpContext.Current;
             HttpPostedFile postedFile = context.Request.Files["file"];
-            
+
+            string fileUploadName = string.Empty;
             if (postedFile.ContentLength > 0)
             {
                 // 記得先建立資料夾
                 //string filePath = HttpContext.Current.Server.MapPath(@"~\upload\" + postedFile.FileName);
+                string fileName = Path.GetFileNameWithoutExtension(postedFile.FileName);
                 string extensionName = Path.GetExtension(postedFile.FileName);
-                string filePath = HttpContext.Current.Server.MapPath(@"~\upload\" + DateTime.Now.ToString("yyyyMMddHHmmsssfff") + extensionName);
+                fileUploadName = fileName + "_" + DateTime.Now.ToString("yyyyMMddHH_mmsssfff") + extensionName;
+                string filePath = HttpContext.Current.Server.MapPath(@"~\upload\" + fileUploadName);
                 postedFile.SaveAs(filePath);
 
                 // vision verify
-                using (var aisys = new AisysVision())
-                {
-                    using (var matchAngle = new AisysMatchAngle())
-                    {
-                        //matchAngle.Learn(ArrowType.A, HttpContext.Current.Server.MapPath(@"~\upload\model_A.bmp"));
-                        //matchAngle.Learn(ArrowType.B, HttpContext.Current.Server.MapPath(@"~\upload\model_B.bmp"));
-                        //matchAngle.Learn(ArrowType.C, HttpContext.Current.Server.MapPath(@"~\upload\model_C.bmp"));
-                        matchAngle.Learn();
+                //using (var aisys = new AisysVision())
+                //{
+                //    using (var matchAngle = new AisysMatchAngle())
+                //    {
+                //        //matchAngle.Learn(ArrowType.A, HttpContext.Current.Server.MapPath(@"~\upload\model_A.bmp"));
+                //        //matchAngle.Learn(ArrowType.B, HttpContext.Current.Server.MapPath(@"~\upload\model_B.bmp"));
+                //        //matchAngle.Learn(ArrowType.C, HttpContext.Current.Server.MapPath(@"~\upload\model_C.bmp"));
+                //        matchAngle.Learn();
 
-                        var result = matchAngle.Match(filePath);
-                        //return new ApiResult(result);
-                        return result?.TrunAngleIn180 ?? double.NaN;
-                    }
-                }
+                //        var result = matchAngle.Match(filePath);
+                //        //return new ApiResult(result);
+                //        return result?.TrunAngleIn180 ?? double.NaN;
+                //    }
+                //}
             }
             
-            //return new ApiResult(null);
-            return double.NaN;
+            return new ApiResult(fileUploadName);
+            //return double.NaN;
         }
 
         public class ApiResult
